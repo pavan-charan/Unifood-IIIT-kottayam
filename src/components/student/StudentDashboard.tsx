@@ -19,7 +19,11 @@ import { OrderTracking } from './OrderTracking';
 
 type TabType = 'profile' | 'menu' | 'cart' | 'orders' ;
 
-export const StudentDashboard: React.FC = () => {
+interface StudentDashboardProps {
+  onNavigate: (page: string) => void;
+}
+
+export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }) => {
   const { user } = useAuth();
   const { 
     orders, 
@@ -45,10 +49,10 @@ export const StudentDashboard: React.FC = () => {
   const tabs = [
     
     { id: 'profile', label: 'Profile', icon: User, count: 0 },
+    { id: 'profile', label: 'Profile', icon: User, count: 0 },
     { id: 'menu', label: 'Menu', icon: Search, count: 0 },
     { id: 'cart', label: 'Cart', icon: ShoppingCart, count: cartItemCount },
     { id: 'orders', label: 'Orders', icon: Clock, count: activeOrders.length }
-  ];
 
   const renderDashboardOverview = () => (
     <div className="min-h-screen bg-gray-50 py-8 mb-16">
@@ -216,16 +220,16 @@ export const StudentDashboard: React.FC = () => {
     switch (activeTab) {
       case 'profile':
         return renderDashboardOverview();
+      case 'profile':
+        return renderDashboardOverview();
       case 'menu':
         return <MenuBrowser />;
       case 'cart':
         return <Cart />;
       case 'orders':
         return <OrderTracking />;
-      default:
-        return renderDashboardOverview();
     }
-  };
+        return renderDashboardOverview();
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -267,6 +271,7 @@ export const StudentDashboard: React.FC = () => {
         </div>
       </div>
 
+    </div>
     </div>
   );
 };

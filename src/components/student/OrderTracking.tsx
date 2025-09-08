@@ -123,6 +123,20 @@ export const OrderTracking: React.FC = () => {
     
     toast.success(`${order.items.length} items added to cart from previous order`);
   };
+  const handleReorder = (order: Order) => {
+    // Add all items from the previous order to cart
+    order.items.forEach(item => {
+      // Find the current menu item to get updated details
+      const currentMenuItem = menuItems.find(menuItem => menuItem.id === item.id);
+      if (currentMenuItem && currentMenuItem.isAvailable) {
+        for (let i = 0; i < item.quantity; i++) {
+          addToCart(currentMenuItem);
+        }
+      }
+    });
+    
+    toast.success(`${order.items.length} items added to cart from previous order`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -277,6 +291,15 @@ export const OrderTracking: React.FC = () => {
                     ))}
                   </div>
 
+                  {/* Reorder Functionality */}
+                  {order.status === 'served' && (
+                    <button 
+                      onClick={() => handleReorder(order)}
+                      className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Reorder
+                    </button>
+                  )}
                   {order.status === 'served' && (
                     <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
                       Reorder

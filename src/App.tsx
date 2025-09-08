@@ -15,11 +15,30 @@ const AppContent: React.FC = () => {
   const auth = useAuth();
   const [currentPage, setCurrentPage] = useState('profile');
 
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page);
+  };
+  const [currentPage, setCurrentPage] = useState('profile');
+
   if (!auth || !auth.user) {
     return <AuthWrapper />;
   }
 
   const { user } = auth;
+
+  const renderContent = () => {
+    if (currentPage === 'settings') {
+      return <Settings />;
+    }
+    if (currentPage === 'cart') {
+      return <Cart />;
+    }
+    return user.role === 'student' ? (
+      <StudentDashboard onNavigate={handleNavigate} />
+    ) : (
+      <ManagerDashboard onNavigate={handleNavigate} />
+    );
+  };
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
@@ -66,6 +85,9 @@ const AppContent: React.FC = () => {
         }}
       />
       <Header onNavigate={handleNavigate} currentPage={currentPage} />
+      <main className="flex-1">
+        {renderContent()}
+      </main>
       <main className="flex-1">
         {renderContent()}
       </main>

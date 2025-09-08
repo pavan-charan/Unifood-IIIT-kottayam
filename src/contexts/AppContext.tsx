@@ -10,6 +10,7 @@ interface AppContextType {
   menuItems: MenuItem[];
   cartItems: CartItem[];
   cartQuantities: Record<string, number>;
+  cartQuantities: Record<string, number>;
   addToCart: (item: MenuItem) => void;
   removeFromCart: (itemId: string) => void;
   updateCartQuantity: (itemId: string, quantity: number) => void;
@@ -156,6 +157,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const { user } = useAuth();
   const [menuItems, setMenuItems] = useState<MenuItem[]>(SAMPLE_MENU_ITEMS);
   const [cartItems, setCartItems] = useState<MenuItem[]>([]);
+  const [cartQuantities, setCartQuantities] = useState<Record<string, number>>({});
   const [cartQuantities, setCartQuantities] = useState<Record<string, number>>({});
   const [orders, setOrders] = useState<Order[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -354,13 +356,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     setCartQuantities(prev => ({
+  const addToCart = (item: MenuItem) => {
+    setCartItems(prev => {
+      const existingItemIndex = prev.findIndex(i => i.id === item.id);
+      if (existingItemIndex !== -1) {
+        const newCartItems = [...prev];
+        newCartItems[existingItemIndex] = { ...newCartItems[existingItemIndex], quantity: (newCartItems[existingItemIndex].quantity || 0) + 1 };
+        return newCartItems;
+      } else {
+        return [...prev, { ...item, quantity: 1 }];
+      }
+    });
+
+    setCartQuantities(prev => ({
       ...prev,
       [item.id]: (prev[item.id] || 0) + 1,
     }));
-  };
-
-  const removeFromCart = (itemId: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== itemId));
     setCartQuantities(prev => {
       const newQuantities = { ...prev };
       delete newQuantities[itemId];
@@ -369,6 +380,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateCartQuantity = (itemId: string, quantity: number) => {
+    setCartItems(prev => {
+      return prev.map(item => {
     setCartItems(prev => {
       return prev.map(item => {
         if (item.id === itemId) {
@@ -385,6 +398,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const clearCart = () => {
     setCartItems([]);
+    setCartQuantities({});
     setCartQuantities({});
   };
 
@@ -753,6 +767,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         // Menu & Cart
         menuItems,
         cartItems,
+        cartQuantities,
         cartQuantities,
         addToCart,
         removeFromCart,

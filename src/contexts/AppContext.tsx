@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
+import { v4 as uuidv4 } from 'uuid';
 import { MenuItem, CartItem, Order, Review, TimeSlot, Notification } from '../types';
 import { useAuth } from './AuthContext';
 
@@ -60,7 +61,7 @@ export const useApp = () => {
 
 const SAMPLE_MENU_ITEMS: MenuItem[] = [
   {
-    id: '1',
+    id: uuidv4(),
     name: 'Chicken Biryani',
     description: 'Aromatic basmati rice cooked with tender chicken pieces and traditional spices',
     price: 120,
@@ -78,7 +79,7 @@ const SAMPLE_MENU_ITEMS: MenuItem[] = [
     preparationTime: 25
   },
   {
-    id: '2',
+    id: uuidv4(),
     name: 'Paneer Butter Masala',
     description: 'Rich and creamy tomato-based curry with soft paneer cubes',
     price: 100,
@@ -96,7 +97,7 @@ const SAMPLE_MENU_ITEMS: MenuItem[] = [
     preparationTime: 20
   },
   {
-    id: '3',
+    id: uuidv4(),
     name: 'Masala Dosa',
     description: 'Crispy rice crepe filled with spiced potato curry, served with chutney and sambar',
     price: 60,
@@ -114,7 +115,7 @@ const SAMPLE_MENU_ITEMS: MenuItem[] = [
     preparationTime: 15
   },
   {
-    id: '4',
+    id: uuidv4(),
     name: 'Chicken Tikka',
     description: 'Marinated chicken pieces grilled to perfection in a tandoor oven',
     price: 150,
@@ -132,7 +133,7 @@ const SAMPLE_MENU_ITEMS: MenuItem[] = [
     preparationTime: 20
   },
   {
-    id: '5',
+    id: uuidv4(),
     name: 'Fresh Lime Soda',
     description: 'Refreshing lime soda with mint leaves and a hint of black salt',
     price: 30,
@@ -278,7 +279,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const { error } = await supabase
         .from('menu_items')
         .insert(SAMPLE_MENU_ITEMS.map(item => ({
-          id: item.id,
           name: item.name,
           description: item.description,
           price: item.price,

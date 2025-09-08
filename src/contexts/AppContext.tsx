@@ -356,6 +356,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     setCartQuantities(prev => ({
+    }
+    )
+    )
+  }
   const addToCart = (item: MenuItem) => {
     setCartItems(prev => {
       const existingItemIndex = prev.findIndex(i => i.id === item.id);
@@ -382,6 +386,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const updateCartQuantity = (itemId: string, quantity: number) => {
     setCartItems(prev => {
       return prev.map(item => {
+      }
+      )
+    }
+    )
     setCartItems(prev => {
       return prev.map(item => {
         if (item.id === itemId) {
